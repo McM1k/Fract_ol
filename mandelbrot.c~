@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 21:22:11 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/06/14 22:38:52 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/06/14 22:35:08 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void			foreach_pixel(t_env env)
 		y = 0;
 		while (y++ < SIZE_Y)
 		{
+			ft_putnbr(env.param);
 			if (env.param == 0)
 				mandelbrot(env, x, y, iter);
 			else if (env.param == 1)

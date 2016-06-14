@@ -6,7 +6,7 @@
 #    By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/06/08 21:26:14 by gboudrie          #+#    #+#              #
-#    Updated: 2016/06/14 18:50:47 by gboudrie         ###   ########.fr        #
+#    Updated: 2016/06/14 18:12:00 by gboudrie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 NAME = fractol
@@ -29,7 +29,7 @@ MLX = -lmlx -framework OpenGL -framework AppKit
 
 all :			$(NAME)
 
-$(NAME) :		$(OBJS) $(HEADER) Makefile
+$(NAME) :		$(SOURCES) $(OBJS) $(HEADER) Makefile
 				$(MKLIB)
 				$(CC) $(FLAGS) -c $(SOURCES)
 				$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(INCLUDES) $(MLX)

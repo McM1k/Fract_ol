@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/11 15:54:05 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/06/11 21:20:02 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/06/14 18:42:48 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		events(int keycode, t_env *env)
 		env->y_decal += (keycode == 125 ? 10 : -10);
 	if (keycode == 78 || keycode == 69)
 	{
-		env->zoom += (keycode == 69 ? 2 : -2);
+		env->zoom += (keycode == 69 ? 100 : -100);
 		if (env->zoom <= 250)
 			env->zoom = 250;
 	}

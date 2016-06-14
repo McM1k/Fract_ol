@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:24:47 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/06/14 22:40:20 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/06/14 22:35:30 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int			mouse_funct(int x, int y, t_env *env)
 	env->pos_x = x;
 	env->pos_y = y;
 	foreach_pixel(*env);
-	return (1);
 }
 
 int			my_key_func(int keycode, void *param)
@@ -58,6 +57,7 @@ int			main(int ac, char **av)
 	{
 		env.param = (ft_strcmp(av[1], "Mandelbrot") == 0 ? 0 : 1);
 		env.param = (ft_strcmp(av[1], "Julia") == 0 ? 1 : 2);
+		ft_putnbr(env.param);
 		env.zoom = 250;
 		env.img = mlx_get_data_addr(env.ig, &(env.bit), &(env.siz), &(env.end));
 		foreach_pixel(env);
