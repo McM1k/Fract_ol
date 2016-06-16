@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 21:22:11 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/06/14 22:38:52 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/06/16 21:28:27 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@ static void		mandelbrot(t_env env, double xC, double yC, int iter)
 	i = 0;
 	xZ = 0;
 	yZ = 0;
-	while (xZ * xZ + yZ * yZ < 4 && i++ < iter)
+	while (xZ * xZ + yZ * yZ < 4 && ++i < iter)
 	{
 		tmp_xZ = xZ;
-		xZ = xZ * xZ - yZ * yZ + (xC / env.zoom);
-		yZ = 2 * tmp_xZ * yZ + (yC / env.zoom);
+		xZ = xZ * xZ - yZ * yZ + (xC / env.zoom + env.pos_x - 2.1 + env.x_decal);
+		yZ = 2 * tmp_xZ * yZ + (yC / env.zoom + env.pos_y - 1.2 + env.y_decal);
 	}
 	if (i == iter)
-		img_addr(env, xC, yC, 0x000000);
+		img_addr(env, xC, yC, 0x00000000);
 	else
-		img_addr(env, xC, yC, 0xFFFFFF * pow(i, 1.998) / iter);
+		img_addr(env, xC, yC, 0x00FFFFFF * pow(i, 1.998) / iter);
 }
 
 static void		julia(t_env env, double x, double y, int iter)
@@ -57,16 +57,16 @@ static void		julia(t_env env, double x, double y, int iter)
 	i = 0;
 	xZ = (x / env.zoom);
 	yZ = (y / env.zoom);
-	while (xZ * xZ + yZ * yZ < 4 && i++ < iter)
+	while (xZ * xZ + yZ * yZ < 4 && ++i < iter)
 	{
 		tmp_xZ = xZ;
 		xZ = xZ * xZ - yZ * yZ + env.pos_x;
 		yZ = 2 * tmp_xZ * yZ + env.pos_y;
 	}
 	if (i == iter)
-		img_addr(env, x, y, 0x000000);
+		img_addr(env, x, y, 0x00000000);
 	else
-		img_addr(env, x, y, 0xFFFFFF * pow(i, 1.998) / iter);
+		img_addr(env, x, y, 0x00FFFFFF * pow(i, 1.998) / iter);
 }
 
 void			foreach_pixel(t_env env)

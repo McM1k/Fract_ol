@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:24:47 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/06/14 22:40:20 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/06/16 21:27:33 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,12 @@ int			main(int ac, char **av)
 	else
 	{
 		env.param = (ft_strcmp(av[1], "Mandelbrot") == 0 ? 0 : 1);
-		env.param = (ft_strcmp(av[1], "Julia") == 0 ? 1 : 2);
+		if (env.param == 1)
+			env.param = (ft_strcmp(av[1], "Julia") == 0 ? 1 : 2);
+		env.pos_x = 0;
+		env.pos_y = 0;
+		env.x_decal = 0;
+		env.y_decal = 0;
 		env.zoom = 250;
 		env.img = mlx_get_data_addr(env.ig, &(env.bit), &(env.siz), &(env.end));
 		foreach_pixel(env);
