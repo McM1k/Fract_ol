@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 21:22:11 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/06/16 21:28:27 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/07/19 21:04:05 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void			img_addr(t_env env, int x, int y, int color)
 {
 	if (!(x > env.siz - 1 || x <= 0 || y <= 0
-		  || x > SIZE_X || y > SIZE_Y))
+		|| x > SIZE_X || y > SIZE_Y))
 		ft_memcpy(&env.img[(x - 1) * 4 + (y - 1) * env.siz], &color, 4);
 }
 
@@ -25,48 +25,59 @@ void			img_addr(t_env env, int x, int y, int color)
 **	Zn = (xZ)^2 - (yZ)^2 + 2 * xZ * yZ * i + xC + yC * i
 **	x = xZ * xZ - yZ * yZ + xC	    y = 2 * xZ * yZ + yC
 */
-static void		mandelbrot(t_env env, double xC, double yC, int iter)
+
+static void		mandelbrot(t_env env, double xc, double yc)
 {
 	int		i;
-	double	xZ;
-	double	yZ;
-	double	tmp_xZ;
+	double	xz;
+	double	yz;
+	double	tmp_xz;
+	int		col;
 
 	i = 0;
-	xZ = 0;
-	yZ = 0;
-	while (xZ * xZ + yZ * yZ < 4 && ++i < iter)
+	xz = 0;
+	yz = 0;
+	col = 0x00FFFFFF;
+	while (xz * xz + yz * yz < 4 && ++i < env.iter)
 	{
-		tmp_xZ = xZ;
-		xZ = xZ * xZ - yZ * yZ + (xC / env.zoom + env.pos_x - 2.1 + env.x_decal);
-		yZ = 2 * tmp_xZ * yZ + (yC / env.zoom + env.pos_y - 1.2 + env.y_decal);
+		tmp_xz = xz;
+		xz = xz * xz - yz * yz + (xc / env.zoom - 2.1 + env.x_decal);
+		yz = 2 * tmp_xz * yz + (yc / env.zoom - 1.2 + env.y_decal);
+		col = col - 150000;
+		if (col % (255 * 255 * 255) == 0)
+			col = 0;
 	}
-	if (i == iter)
-		img_addr(env, xC, yC, 0x00000000);
+	if (i == env.iter)
+		img_addr(env, xc, yc, 0x00000000);
 	else
-		img_addr(env, xC, yC, 0x00FFFFFF * pow(i, 1.998) / iter);
+		img_addr(env, xc, yc, col);
 }
 
-static void		julia(t_env env, double x, double y, int iter)
+static void		julia(t_env env, double x, double y)
 {
 	int		i;
-	double	xZ;
-	double	yZ;
-	double	tmp_xZ;
+	double	xz;
+	double	yz;
+	double	tmp_xz;
+	int		col;
 
 	i = 0;
-	xZ = (x / env.zoom);
-	yZ = (y / env.zoom);
-	while (xZ * xZ + yZ * yZ < 4 && ++i < iter)
+	xz = (double)(x / (double)env.zoom);
+	yz = (double)(y / (double)env.zoom);
+	col = 0;
+	while (xz * xz + yz * yz < 4 && ++i < env.iter)
 	{
-		tmp_xZ = xZ;
-		xZ = xZ * xZ - yZ * yZ + env.pos_x;
-		yZ = 2 * tmp_xZ * yZ + env.pos_y;
+		tmp_xz = xz;
+		xz = (double)(xz * xz - yz * yz + (double)(env.pos_x));
+		yz = (double)(2 * tmp_xz * yz + (double)(env.pos_y));
+		col = col - 150000;
+		if (col % (255 * 255 * 255) == 0)
+			col = 0;
 	}
-	if (i == iter)
+	if (i == env.iter)
 		img_addr(env, x, y, 0x00000000);
 	else
-		img_addr(env, x, y, 0x00FFFFFF * pow(i, 1.998) / iter);
+		img_addr(env, x, y, col);
 }
 
 void			foreach_pixel(t_env env)
@@ -83,9 +94,9 @@ void			foreach_pixel(t_env env)
 		while (y++ < SIZE_Y)
 		{
 			if (env.param == 0)
-				mandelbrot(env, x, y, iter);
+				mandelbrot(env, x, y);
 			else if (env.param == 1)
-				julia(env, x, y, iter);
+				julia(env, x, y);
 		}
 	}
 	x = SIZE_X - 30;

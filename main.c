@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:24:47 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/06/16 21:27:33 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/07/18 21:22:57 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int			mouse_funct(int x, int y, t_env *env)
 	env->pos_x = x;
 	env->pos_y = y;
 	foreach_pixel(*env);
+	mlx_put_image_to_window(env->mlx, env->win, env->ig, 0, 0);
 	return (1);
 }
 
@@ -42,10 +43,9 @@ int			my_key_func(int keycode, void *param)
 	return (1);
 }
 
-
 int			main(int ac, char **av)
 {
-    t_env   env;
+	t_env	env;
 
 	if (ac != 2 || (ft_strcmp(av[1], "Mandelbrot") != 0 &&
 					ft_strcmp(av[1], "Julia") != 0 &&
@@ -63,7 +63,8 @@ int			main(int ac, char **av)
 		env.pos_y = 0;
 		env.x_decal = 0;
 		env.y_decal = 0;
-		env.zoom = 250;
+		env.zoom = 200;
+		env.iter = 50;
 		env.img = mlx_get_data_addr(env.ig, &(env.bit), &(env.siz), &(env.end));
 		foreach_pixel(env);
 		mlx_put_image_to_window(env.mlx, env.win, env.ig, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:27:05 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/06/16 21:30:47 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/07/17 15:09:36 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct	s_env
 	double		x_decal;
 	double		y_decal;
 	int			param;
+	int			iter;
 	int			pos_x;
 	int			pos_y;
 }				t_env;
