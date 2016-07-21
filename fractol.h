@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:27:05 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/07/17 15:09:36 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/07/21 15:21:10 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ typedef struct	s_env
 	int			siz;
 	int			bit;
 	int			end;
-	int			zoom;
+	double		zoom;
 	double		x_decal;
 	double		y_decal;
 	int			param;
 	int			iter;
-	int			pos_x;
-	int			pos_y;
+	double		pos_x;
+	double		pos_y;
 }				t_env;
 
 void			foreach_pixel(t_env env);

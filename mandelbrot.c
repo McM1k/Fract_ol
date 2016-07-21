@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 21:22:11 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/07/19 21:04:05 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/07/21 21:42:00 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,17 @@ static void		mandelbrot(t_env env, double xc, double yc)
 	i = 0;
 	xz = 0;
 	yz = 0;
+	xc = (double)(xc / env.zoom + env.x_decal - env.pos_x / env.zoom);
+	yc = (double)(yc / env.zoom + env.y_decal - env.pos_y / env.zoom);
 	col = 0x00FFFFFF;
 	while (xz * xz + yz * yz < 4 && ++i < env.iter)
 	{
 		tmp_xz = xz;
-		xz = xz * xz - yz * yz + (xc / env.zoom - 2.1 + env.x_decal);
-		yz = 2 * tmp_xz * yz + (yc / env.zoom - 1.2 + env.y_decal);
+		xz = xz * xz - yz * yz + xc;
+		yz = 2 * tmp_xz * yz + yc;
 		col = col - 150000;
-		if (col % (255 * 255 * 255) == 0)
-			col = 0;
+		if (col < 0x00000000)
+			col = 0x00FFFFFF;
 	}
 	if (i == env.iter)
 		img_addr(env, xc, yc, 0x00000000);
@@ -62,17 +64,17 @@ static void		julia(t_env env, double x, double y)
 	int		col;
 
 	i = 0;
-	xz = (double)(x / (double)env.zoom);
-	yz = (double)(y / (double)env.zoom);
-	col = 0;
+	xz = (double)(x / env.zoom + env.x_decal - env.pos_x / env.zoom);
+	yz = (double)(y / env.zoom + env.y_decal - env.pos_y / env.zoom);
+	col = 0x00FFFFFF;
 	while (xz * xz + yz * yz < 4 && ++i < env.iter)
 	{
 		tmp_xz = xz;
-		xz = (double)(xz * xz - yz * yz + (double)(env.pos_x));
-		yz = (double)(2 * tmp_xz * yz + (double)(env.pos_y));
+		xz = (double)(xz * xz - yz * yz + env.pos_x / 1000);
+		yz = (double)(2 * tmp_xz * yz + env.pos_y / 1000);
 		col = col - 150000;
-		if (col % (255 * 255 * 255) == 0)
-			col = 0;
+		if (col < 0x00000000)
+			col = 0x00FFFFFF;
 	}
 	if (i == env.iter)
 		img_addr(env, x, y, 0x00000000);
@@ -86,6 +88,14 @@ void			foreach_pixel(t_env env)
 	double		y;
 	double		iter;
 
+	x = SIZE_X - 30;
+	while (x++ < SIZE_X)
+	{
+		y = SIZE_Y - 30;
+		while (y++ < SIZE_Y)
+			img_addr(env, x, y, 0x00FF0000);
+	}
+	mlx_put_image_to_window(env.mlx, env.win, env.ig, 0, 0);
 	iter = 30 + (env.zoom / 500);
 	x = 0;
 	while (x++ < SIZE_X)
@@ -104,6 +114,6 @@ void			foreach_pixel(t_env env)
 	{
 		y = SIZE_Y - 30;
 		while (y++ < SIZE_Y)
-			img_addr(env, x, y, 0x00FF0000);
+			img_addr(env, x, y, 0x0000FF00);
 	}
 }

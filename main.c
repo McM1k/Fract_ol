@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:24:47 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/07/18 21:22:57 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/07/21 19:02:48 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int			destroy_funct(void *param)
 
 int			mouse_funct(int x, int y, t_env *env)
 {
-	env->pos_x = x;
-	env->pos_y = y;
+	env->pos_x = (double)x;
+	env->pos_y = (double)y;
 	foreach_pixel(*env);
 	mlx_put_image_to_window(env->mlx, env->win, env->ig, 0, 0);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/11 15:54:05 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/07/18 19:16:37 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/07/21 18:06:26 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		events(int keycode, t_env *env)
 			(double)10 / env->zoom : (double)-10 / env->zoom);
 	if (keycode == 78 || keycode == 69)
 	{
-		env->zoom *= (keycode == 69 ? 2 : (double)0.5);
+		env->zoom *= (keycode == 69 ? 2 : 0.5);
 		if (env->zoom <= 1)
 			env->zoom = 1;
 	}
