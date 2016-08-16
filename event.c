@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/11 15:54:05 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/07/21 18:06:26 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/08/16 19:50:39 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		events(int keycode, t_env *env)
 		destroy_funct(env);
 	if (keycode == 123 || keycode == 124)
 		env->x_decal += (keycode == 123 ?
-			(double)-10 / env->zoom : (double)10 / env->zoom);
+			-10.0 / env->zoom : 10.0 / env->zoom);
 	if (keycode == 75 || keycode == 67)
 	{
 		env->iter += (keycode == 67 ? 1 : -1);
@@ -35,6 +35,24 @@ void		events(int keycode, t_env *env)
 		if (env->zoom <= 1)
 			env->zoom = 1;
 	}
+}
+
+int		clic_funct(int button, int x, int y, t_env *env)
+{
+	if ((button == 1) || (button == 4))
+	{
+		env->x_decal += (x - (SIZE_X / 2)) / (env->zoom * 1.5);
+		env->y_decal += (y - (SIZE_Y / 2)) / (env->zoom * 1.5);
+		events(69, env);
+	}
+	if ((button == 2) || (button == 5))
+	{
+		env->x_decal -= (x - (SIZE_X / 2)) / (env->zoom * 1.5);
+		env->y_decal -= (y - (SIZE_Y / 2)) / (env->zoom * 1.5);
+		events(78, env);
+	}
+	foreach_pixel(*env);
+	return (0);
 }
 
 void		ft_quit(void)

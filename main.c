@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:24:47 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/07/21 19:02:48 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/08/16 18:28:08 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ int			mouse_funct(int x, int y, t_env *env)
 {
 	env->pos_x = (double)x;
 	env->pos_y = (double)y;
-	foreach_pixel(*env);
-	mlx_put_image_to_window(env->mlx, env->win, env->ig, 0, 0);
+	if (env->param == 1)
+	{
+		foreach_pixel(*env);
+	}
 	return (1);
 }
 
@@ -39,7 +41,6 @@ int			my_key_func(int keycode, void *param)
 	env = (t_env *)param;
 	events(keycode, env);
 	foreach_pixel(*env);
-	mlx_put_image_to_window(env->mlx, env->win, env->ig, 0, 0);
 	return (1);
 }
 
@@ -64,11 +65,11 @@ int			main(int ac, char **av)
 		env.x_decal = 0;
 		env.y_decal = 0;
 		env.zoom = 200;
-		env.iter = 50;
+		env.iter = 100;
 		env.img = mlx_get_data_addr(env.ig, &(env.bit), &(env.siz), &(env.end));
 		foreach_pixel(env);
-		mlx_put_image_to_window(env.mlx, env.win, env.ig, 0, 0);
 		mlx_hook(env.win, 6, 0, mouse_funct, &env);
+		mlx_hook(env.win, 4, 0, clic_funct, &env);
 		mlx_hook(env.win, 2, 0, my_key_func, &env);
 		mlx_hook(env.win, 17, 0, destroy_funct, &env);
 		mlx_loop(env.mlx);

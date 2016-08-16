@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:27:05 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/07/21 15:21:10 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/08/16 18:25:06 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <fcntl.h>
 # include <math.h>
 # define SIZE_X 750
-# define SIZE_Y 650
+# define SIZE_Y 600
 
 typedef struct	s_env
 {
@@ -42,6 +42,7 @@ void			img_addr(t_env env, int x, int y, int color);
 void			events(int keycode, t_env *env);
 int				destroy_funct(void *param);
 int				mouse_funct(int x, int y, t_env *env);
+int				clic_funct(int button, int x, int y, t_env *env);
 void			ft_quit();
 
 #endif
