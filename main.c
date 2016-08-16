@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:24:47 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/08/16 18:28:08 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/08/16 23:47:56 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			mouse_funct(int x, int y, t_env *env)
 	env->pos_y = (double)y;
 	if (env->param == 1)
 	{
-		foreach_pixel(*env);
+		fractals(*env);
 	}
 	return (1);
 }
@@ -40,7 +40,7 @@ int			my_key_func(int keycode, void *param)
 
 	env = (t_env *)param;
 	events(keycode, env);
-	foreach_pixel(*env);
+	fractals(*env);
 	return (1);
 }
 
@@ -66,8 +66,9 @@ int			main(int ac, char **av)
 		env.y_decal = 0;
 		env.zoom = 200;
 		env.iter = 100;
+		env.col_set = 150000;
 		env.img = mlx_get_data_addr(env.ig, &(env.bit), &(env.siz), &(env.end));
-		foreach_pixel(env);
+		fractals(env);
 		mlx_hook(env.win, 6, 0, mouse_funct, &env);
 		mlx_hook(env.win, 4, 0, clic_funct, &env);
 		mlx_hook(env.win, 2, 0, my_key_func, &env);

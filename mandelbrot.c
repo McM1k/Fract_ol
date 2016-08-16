@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 21:22:11 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/08/16 18:27:55 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/08/16 23:46:10 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,26 @@ void			img_addr(t_env env, int x, int y, int color)
 **	x = xZ * xZ - yZ * yZ + xC	    y = 2 * xZ * yZ + yC
 */
 
-static int		mandelbrot(t_env env, double xc, double yc)
+int			mandelbrot(t_env env, double xc, double yc)
 {
-	int		i;
-	double	xz;
-	double	yz;
-	double	tmp_xz;
-	int		col;
+	int			i;
+	double		xz;
+	double		yz;
+	double		tmp_xz;
+	int			col;
 
 	i = 0;
 	xz = 0;
 	yz = 0;
-	xc = (double)(xc / env.zoom + env.x_decal - (double)(SIZE_X / 2) / env.zoom);
-	yc = (double)(yc / env.zoom + env.y_decal - (double)(SIZE_Y / 2) / env.zoom);
+	xc = xc / env.zoom + env.x_decal - (double)(SIZE_X / 2) / env.zoom;
+	yc = yc / env.zoom + env.y_decal - (double)(SIZE_Y / 2) / env.zoom;
 	col = 0x00FFFFFF;
 	while (xz * xz + yz * yz < 4 && ++i < env.iter)
 	{
 		tmp_xz = xz;
 		xz = (double)(xz * xz - yz * yz + xc);
 		yz = (double)(2 * tmp_xz * yz + yc);
-		col = col - 135000;
+		col = col - env.col_set;
 		if (col < 0x00000000)
 			col = 0x00FFFFFF;
 	}
@@ -55,24 +55,24 @@ static int		mandelbrot(t_env env, double xc, double yc)
 		return (col);
 }
 
-static int		julia(t_env env, double x, double y)
+int			julia(t_env env, double x, double y)
 {
-	int		i;
-	double	xz;
-	double	yz;
-	double	tmp_xz;
-	int		col;
+	int			i;
+	double		xz;
+	double		yz;
+	double		tmp_xz;
+	int			col;
 
 	i = 0;
-	xz = (double)(x / env.zoom + env.x_decal - (double)(SIZE_X / 2) / env.zoom);
-	yz = (double)(y / env.zoom + env.y_decal - (double)(SIZE_Y / 2) / env.zoom);
+	xz = x / env.zoom + env.x_decal - (double)(SIZE_X / 2) / env.zoom;
+	yz = y / env.zoom + env.y_decal - (double)(SIZE_Y / 2) / env.zoom;
 	col = 0x00FFFFFF;
 	while (xz * xz + yz * yz < 4 && ++i < env.iter)
 	{
 		tmp_xz = xz;
 		xz = (double)(xz * xz - yz * yz + env.pos_x / 1000);
 		yz = (double)(2 * tmp_xz * yz + env.pos_y / 1000);
-		col = col - 135000;
+		col = col - env.col_set;
 		if (col < 0x00000000)
 			col = 0x00FFFFFF;
 	}
@@ -82,21 +82,29 @@ static int		julia(t_env env, double x, double y)
 		return (col);
 }
 
-void			foreach_pixel(t_env env)
+void			fractals(t_env env)
 {
-	double		x;
-	double		y;
+	int		(*funct)(t_env, double, double);
+
+	if (env.param == 0)
+		funct = &mandelbrot;
+	if (env.param == 1)
+		funct = &julia;
+//	if (env.param == 2)
+//		funct = &other;
+	foreach_pixel(env, funct);
+}
+
+void			foreach_pixel(t_env env, int (*funct)(t_env, double, double))
+{
+	int			x;
+	int			y;
 	x = 0;
 	while (x++ < SIZE_X)
 	{
 		y = 0;
 		while (y++ < SIZE_Y)
-		{
-			if (env.param == 0)
-				img_addr(env, x, y, mandelbrot(env, x, y));
-			else if (env.param == 1)
-				img_addr(env, x, y, julia(env, x, y));
-		}
+			img_addr(env, x, y, funct(env, (double)x, (double)y));
 	}
 	mlx_put_image_to_window(env.mlx, env.win, env.ig, 0, 0);
 }
