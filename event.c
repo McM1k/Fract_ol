@@ -6,23 +6,33 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/11 15:54:05 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/08/16 23:47:00 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/08/17 19:16:23 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "fractol.h"
 
-void		events(int keycode, t_env *env)
+int		key_funct(int keycode, void *param)
+{
+	t_env	*env;
+
+	env = (t_env *)param;
+	events(keycode, env);
+	fractals(*env);
+	return (1);
+}
+
+void	events(int keycode, t_env *env)
 {
 	if (keycode == 53)
 		destroy_funct(env);
 	if (keycode == 123 || keycode == 124)
 		env->x_decal += (keycode == 123 ?
-			-10.0 / env->zoom : 10.0 / env->zoom);
+			-30.0 / env->zoom : 30.0 / env->zoom);
 	if (keycode == 75 || keycode == 67)
 	{
-		env->iter += (keycode == 67 ? 1 : -1);
+		env->iter += (keycode == 67 ? 20 : -20);
 		if (env->iter < 1)
 			env->iter = 1;
 	}
@@ -37,6 +47,17 @@ void		events(int keycode, t_env *env)
 		if (env->zoom <= 1)
 			env->zoom = 1;
 	}
+}
+
+int		mouse_funct(int x, int y, t_env *env)
+{
+	env->pos_x = (double)x;
+	env->pos_y = (double)y;
+	if (env->param == 1)
+	{
+		fractals(*env);
+	}
+	return (1);
 }
 
 int		clic_funct(int button, int x, int y, t_env *env)
@@ -57,8 +78,14 @@ int		clic_funct(int button, int x, int y, t_env *env)
 	return (0);
 }
 
-void		ft_quit(void)
+int		destroy_funct(void *param)
 {
+	t_env	*env;
+
+	env = (t_env *)param;
+	mlx_destroy_image(env->mlx, env->ig);
+	mlx_destroy_window(env->mlx, env->win);
 	ft_putendl("Closing program.");
 	exit(0);
+	return (1);
 }

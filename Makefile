@@ -6,7 +6,7 @@
 #    By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/06/08 21:26:14 by gboudrie          #+#    #+#              #
-#    Updated: 2016/07/17 15:27:05 by gboudrie         ###   ########.fr        #
+#    Updated: 2016/08/17 18:10:19 by gboudrie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 NAME = fractol
@@ -21,7 +21,7 @@ HEADER = fractol.h
 
 FLAGS = -Wall -Wextra -Werror
 
-SOURCES = main.c mandelbrot.c event.c
+SOURCES = main.c fractals.c foreach.c event.c
 
 OBJS = $(SOURCES:.c=.o)
 

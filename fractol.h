@@ -6,7 +6,7 @@
 /*   By: gboudrie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/25 17:27:05 by gboudrie          #+#    #+#             */
-/*   Updated: 2016/08/16 23:49:42 by gboudrie         ###   ########.fr       */
+/*   Updated: 2016/08/17 19:30:00 by gboudrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ void			events(int keycode, t_env *env);
 int				destroy_funct(void *param);
 int				mouse_funct(int x, int y, t_env *env);
 int				clic_funct(int button, int x, int y, t_env *env);
-void			ft_quit();
+int				key_funct(int keycode, void *param);
 void			fractals(t_env env);
 int				mandelbrot(t_env env, double xc, double yc);
 int				julia(t_env env, double x, double y);
+int				sinusoida(t_env env, double x, double y);
 
 #endif
